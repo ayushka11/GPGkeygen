@@ -43,8 +43,13 @@ commit() {
     if [ $arg -eq 1 ];
     then
         git config user.signingkey $inpc
-    else
+    elif [ $arg -eq 2 ];
+    then
         git config --global user.signingkey $inpc
+    else 
+        echo "invalid input"
+        exit
+        ((exit_var++))
     fi
 }
 
@@ -58,6 +63,10 @@ work_key() {
     if [ $work -eq 1 ];
     then
         commit $inp
+    else 
+        echo "invalid input"
+        exit
+        ((exit_var++))
     fi
 }
 

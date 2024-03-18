@@ -53,6 +53,7 @@ do
     then
         listkeys
     else
+        echo "invalid input"
         exit
         ((exit_var++))
     fi
