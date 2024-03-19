@@ -11,7 +11,12 @@ key_exists() {
     done
 }
 
-exit() {
+handle_error() {
+    echo "Invalid input. Please enter a valid number."
+    exit 2
+}
+
+ex() {
     echo -e "${WHITE}------THANK YOU FOR USING GPGKEYGEN------${RESET}"
 }
 
@@ -40,16 +45,24 @@ commit() {
     echo -e "${CYAN}1. Locally.${RESET}"
     echo -e "${CYAN}2. Globaly.${RESET}"
     read arg
+    case $arg in
+    0)
+        echo "Exiting."
+        exit 2
+        ;;
+    1|2)
+        echo "You chose option $arg."
+        ;;
+    *)
+        handle_error
+        ;;
+    esac
     if [ $arg -eq 1 ];
     then
         git config user.signingkey $inpc
     elif [ $arg -eq 2 ];
     then
         git config --global user.signingkey $inpc
-    else 
-        echo "invalid input"
-        exit
-        ((exit_var++))
     fi
 }
 
@@ -60,13 +73,21 @@ work_key() {
     echo -e "${RED}0. Exit.${RESET}"
     echo -e "${CYAN}1. Use it for your commits.${RESET}"
     read work
+    case $work in
+    0)
+        echo "Exiting."
+        exit 2
+        ;;
+    1)
+        echo "You chose option $work."
+        ;;
+    *)
+        handle_error
+        ;;
+    esac
     if [ $work -eq 1 ];
     then
         commit $inp
-    else 
-        echo "invalid input"
-        exit
-        ((exit_var++))
     fi
 }
 
@@ -75,4 +96,26 @@ del_key() {
     echo "$inpd"
     gpg --delete-secret-key $inpd
     gpg --delete-key $inpd
+}
+
+setupnewkey() {
+    key_exists
+        gpg --full-generate-key
+        newkey = ${key[keys]}
+        work_key ${newkey}
+}
+
+workwitholdkey() {
+    listkeys
+        read numkey
+        existkey=${key[keys-numkey+1]}
+        work_key ${existkey}
+}
+
+deleteoldkey() {
+    listkeys
+        read delkey
+        exkey=${key[keys-delkey+1]}
+        echo $exkey
+        del_key ${exkey}
 }

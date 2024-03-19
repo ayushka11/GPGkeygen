@@ -29,32 +29,37 @@ do
         echo -e "${WHITE} 3. Delete a key. ${RESET}"
         echo -e "${BLUE} 4. View existing keys. ${RESET}"
     fi
+
     read -p "enter the corresponding number : " num
+
+    case $num in
+    0)
+        echo "Exiting."
+        exit 2
+        ;;
+    1|2|3|4)
+        echo "You chose option $num."
+        ;;
+    *)
+        handle_error
+        ;;
+    esac
+
     if [ $num -eq 1 ];
     then
-        key_exists
-        gpg --full-generate-key
-        newkey = ${key[keys]}
-        work_key ${newkey}
+        setupnewkey
     elif [ $num -eq 2 ];
     then
-        listkeys
-        read numkey
-        existkey=${key[keys-numkey+1]}
-        work_key ${existkey}
+        workwitholdkey
     elif [ $num -eq 3 ];
     then
-        listkeys
-        read delkey
-        exkey=${key[keys-delkey+1]}
-        echo $exkey
-        del_key ${exkey}
+        deleteoldkey
     elif [ $num -eq 4 ];
     then
         listkeys
     else
-        echo "invalid input"
-        exit
+        ex
+        exit 2
         ((exit_var++))
     fi
 done
