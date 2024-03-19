@@ -50,20 +50,18 @@ commit() {
         echo "Exiting."
         exit 2
         ;;
-    1|2)
+    1)
         echo "You chose option $arg."
+        git config user.signingkey $inpc
+        ;;
+    2)
+        echo "You chose option $arg."
+        git config --global user.signingkey $inpc
         ;;
     *)
         handle_error
         ;;
     esac
-    if [ $arg -eq 1 ];
-    then
-        git config user.signingkey $inpc
-    elif [ $arg -eq 2 ];
-    then
-        git config --global user.signingkey $inpc
-    fi
 }
 
 work_key() {
@@ -80,15 +78,12 @@ work_key() {
         ;;
     1)
         echo "You chose option $work."
+        commit $inp
         ;;
     *)
         handle_error
         ;;
     esac
-    if [ $work -eq 1 ];
-    then
-        commit $inp
-    fi
 }
 
 del_key() {

@@ -37,31 +37,26 @@ do
         echo "Exiting."
         exit 2
         ;;
-    1|2|3|4)
+    1)
         echo "You chose option $num."
+        setupnewkey
         ;;
+    2)
+        echo "You chose option $num."
+        workwitholdkey
+        ;;       
+    3)
+        echo "You chose option $num."
+        deleteoldkey
+        ;;
+    4)
+        echo "You chose option $num."
+        listkeys
+        ;;    
     *)
         handle_error
         ;;
     esac
-
-    if [ $num -eq 1 ];
-    then
-        setupnewkey
-    elif [ $num -eq 2 ];
-    then
-        workwitholdkey
-    elif [ $num -eq 3 ];
-    then
-        deleteoldkey
-    elif [ $num -eq 4 ];
-    then
-        listkeys
-    else
-        ex
-        exit 2
-        ((exit_var++))
-    fi
 done
     
 
